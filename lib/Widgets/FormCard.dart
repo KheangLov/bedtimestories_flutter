@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:bedtimestories/share_data.dart';
 
 class FormCard extends StatelessWidget {
   FormCard({Key key, this.param}) : super(key: key);
@@ -65,6 +66,7 @@ class FormCard extends StatelessWidget {
               )
             ),
             TextField(
+              controller: ShareData.emailController,
               decoration: InputDecoration(
                 hintText: "Enter email",
                 hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)
@@ -80,6 +82,7 @@ class FormCard extends StatelessWidget {
               )
             ),
             TextField(
+              controller: ShareData.passwordController,
               obscureText: true,
               decoration: InputDecoration(
                 hintText: "Enter password",

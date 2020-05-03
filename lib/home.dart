@@ -1,32 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:bedtimestories/main.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Widgets/FormCard.dart';
 import 'Widgets/SocialIcons.dart';
 import 'CustomIcons.dart';
 
-class RegisterPage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
   _MyAppState createState() => new _MyAppState();
 }
 
-class _MyAppState extends State<RegisterPage> {
-  Widget radioButton(bool isSelected) => Container(
-    width: 16.0,
-    height: 16.0,
-    padding: EdgeInsets.all(2.0),
-    decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(width: 2.0, color: Colors.black)),
-    child: isSelected
-        ? Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration:
-      BoxDecoration(shape: BoxShape.circle, color: Colors.black),
-    )
-        : Container(),
-  );
+class _MyAppState extends State<HomePage> {
+  SharedPreferences sharedPreferences;
+
+  @override
+  void initState() {
+    super.initState();
+    checkLoginStatus();
+  }
+
+  checkLoginStatus() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.getString('token') == null) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (BuildContext context) => MyApp()
+        ),
+        (Route<dynamic> route) => false
+      );
+    }
+  }
 
   Widget horizontalLine() => Padding(
     padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -73,12 +77,12 @@ class _MyAppState extends State<RegisterPage> {
                         height: ScreenUtil.getInstance().setHeight(110),
                       ),
                       Text("Stories",
-                        style: TextStyle(
-                          fontFamily: "Poppins-Bold",
-                          fontSize: ScreenUtil.getInstance().setSp(46),
-                          letterSpacing: .6,
-                          fontWeight: FontWeight.bold
-                        )
+                          style: TextStyle(
+                              fontFamily: "Poppins-Bold",
+                              fontSize: ScreenUtil.getInstance().setSp(46),
+                              letterSpacing: .6,
+                              fontWeight: FontWeight.bold
+                          )
                       )
                     ],
                   ),
@@ -97,18 +101,18 @@ class _MyAppState extends State<RegisterPage> {
                           width: MediaQuery.of(context).size.width * 0.86,
                           height: ScreenUtil.getInstance().setHeight(100),
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              Color(0xFF17ead9),
-                              Color(0xFF6078ea)
-                            ]),
-                            borderRadius: BorderRadius.circular(6.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0xFF6078ea).withOpacity(.3),
-                                offset: Offset(0.0, 8.0),
-                                blurRadius: 8.0
-                              )
-                            ]
+                              gradient: LinearGradient(colors: [
+                                Color(0xFF17ead9),
+                                Color(0xFF6078ea)
+                              ]),
+                              borderRadius: BorderRadius.circular(6.0),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color(0xFF6078ea).withOpacity(.3),
+                                    offset: Offset(0.0, 8.0),
+                                    blurRadius: 8.0
+                                )
+                              ]
                           ),
                           child: Material(
                             color: Colors.transparent,
@@ -116,12 +120,12 @@ class _MyAppState extends State<RegisterPage> {
                               onTap: () {},
                               child: Center(
                                 child: Text("REGISTER",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: "Poppins-Bold",
-                                    fontSize: 18,
-                                    letterSpacing: 1.0
-                                  )
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "Poppins-Bold",
+                                        fontSize: 18,
+                                        letterSpacing: 1.0
+                                    )
                                 ),
                               ),
                             ),
@@ -138,9 +142,9 @@ class _MyAppState extends State<RegisterPage> {
                     children: <Widget>[
                       horizontalLine(),
                       Text("Social Login",
-                        style: TextStyle(
-                          fontSize: 16.0, fontFamily: "Poppins-Medium"
-                        )
+                          style: TextStyle(
+                              fontSize: 16.0, fontFamily: "Poppins-Medium"
+                          )
                       ),
                       horizontalLine()
                     ],
@@ -199,17 +203,17 @@ class _MyAppState extends State<RegisterPage> {
                       InkWell(
                         onTap: () {
                           Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => MyApp()
-                            ),
-                            (Route<dynamic> route) => false
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => MyApp()
+                              ),
+                              (Route<dynamic> route) => false
                           );
                         },
                         child: Text("Login",
-                          style: TextStyle(
-                            color: Color(0xFF5d74e3),
-                            fontFamily: "Poppins-Bold"
-                          )
+                            style: TextStyle(
+                                color: Color(0xFF5d74e3),
+                                fontFamily: "Poppins-Bold"
+                            )
                         ),
                       )
                     ],
@@ -222,6 +226,23 @@ class _MyAppState extends State<RegisterPage> {
             ),
           )
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            title: Text('Business'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            title: Text('School'),
+          ),
+        ],
+        selectedItemColor: Colors.amber[800],
       ),
     );
   }
